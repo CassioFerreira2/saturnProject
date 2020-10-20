@@ -26,11 +26,17 @@ object MainClass {
         glfwMakeContextCurrent(window)
         GLES.createCapabilities()
 
-        val windowSize = BufferUtils.createIntBuffer()
-        glfwGetWindowSize(window, windowSize[0], windowSize[1])
+        val width = IntArray(1)
+        val height = IntArray(1)
 
+        // Configura um ouvidor de inputs do teclado para events.keyHandler
+        glfwSetKeyCallback(window, Events::keyHandler)
+
+        glfwSwapInterval(1)
         while (!glfwWindowShouldClose(window)) {
-            Renderer.render()
+            glfwGetWindowSize(window, width, height)
+
+            Renderer.render(width[0], height[0])
             glfwSwapBuffers(window)
             glfwPollEvents()
         }

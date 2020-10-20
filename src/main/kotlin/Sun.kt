@@ -6,44 +6,36 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-object Saturn {
-    const val SIZE = 1f
-    const val POSITION_COMPONENTS = 3
+object Sun {
+    const val SIZE = 0.5f
+    const val POSITION_COMPONENTS = 4
     const val COLOR_COMPONENTS = 4
+    const val DISTANCE = 7f
 
     // Square
     val vertices = floatArrayOf(
-            -1f, -1f, 0f,
-            1f, -1f, 0f,
-            1f,  1f, 0f,
-            -1f,  1f, 0f
+            -1f, -1f, 0f, DISTANCE,
+             1f, -1f, 0f, DISTANCE,
+             1f,  1f, 0f, DISTANCE,
+            -1f,  1f, 0f, DISTANCE
     )
     val indices = shortArrayOf(0, 1, 2, 2, 3, 0)
-
     val appleTextureCoords = floatArrayOf(
             // Triangle 1
-            1f, 0f,
             1f, 1f,
             0f, 1f,
-            0f, 0f
+            0f, 0f,
+            1f, 0f
     )
 
     private val appleTexture: Int = buildTexture("apple.png", 900, 900)
     private val appleTextureCoordsID = buildStaticArrayVBOS(appleTextureCoords)
-
     private var a_PositionLocation: Int? = null
 
+    // Some interative variables
+    var rotating = false
 
-    init {
-        // Multiplica pelo tamanho
-        for ( i in vertices.indices ) {
-            vertices[i] *= SIZE
-        }
-
-
-    }
-
-    fun draw(program: Int) {
+    fun draw(program: Int, modelMatrix: FloatArray) {
         drawTexture(program)
 
         a_PositionLocation = getAndVerifyAtributte(program, "a_Position")
@@ -58,6 +50,8 @@ object Saturn {
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO)
         nglDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0)
+
+        if (rotating) rotateSquare(0.2f, modelMatrix)
     }
 
     private fun drawTexture(program: Int) {
