@@ -1,0 +1,1 @@
+C:\Users\cassio\Desktop\otheropenglProjects\saturnProject2\build\classes\kotlin\main\org\saturnProject2\MainClass$Companion.class;C:\Users\cassio\Desktop\otheropenglProjects\saturnProject2\build\classes\kotlin\main\org\saturnProject2\MainClass.class
